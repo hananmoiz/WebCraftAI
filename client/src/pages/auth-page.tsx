@@ -85,22 +85,36 @@ export default function AuthPage() {
 
   const onLoginSubmit = (data: LoginFormValues) => {
     setError(null);
-    loginMutation.mutate(data, {
-      onError: (error) => {
-        setError(error.message);
-      }
-    });
+    
+    try {
+      // In TanStack Query v5, mutations are called directly
+      loginMutation.mutate(data, {
+        onError: (error) => {
+          setError(error.message);
+        }
+      });
+    } catch (err) {
+      setError("Login service is temporarily unavailable. Please try again later.");
+      console.error("Login error:", err);
+    }
   };
 
   const onRegisterSubmit = (data: RegisterFormValues) => {
     setError(null);
     // Remove confirmPassword before sending to API
     const { confirmPassword, ...registerData } = data;
-    registerMutation.mutate(registerData, {
-      onError: (error) => {
-        setError(error.message);
-      }
-    });
+    
+    try {
+      // In TanStack Query v5, mutations are called directly
+      registerMutation.mutate(registerData, {
+        onError: (error) => {
+          setError(error.message);
+        }
+      });
+    } catch (err) {
+      setError("Registration service is temporarily unavailable. Please try again later.");
+      console.error("Registration error:", err);
+    }
   };
 
   return (
@@ -109,8 +123,8 @@ export default function AuthPage() {
       <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center md:text-left">
-            <h1 className="text-3xl font-bold text-white mb-2 font-space">
-              Design<span className="text-[#FF00FF]">AI</span>
+            <h1 className="text-3xl font-bold text-white mb-2 font-space animate-fade-in">
+              Design<span className="text-purple-500">AI</span>
             </h1>
             <p className="text-neutral-400">Sign in to start creating AI-powered websites</p>
           </div>
@@ -183,7 +197,7 @@ export default function AuthPage() {
                   <CardFooter>
                     <Button 
                       type="submit" 
-                      className="w-full bg-gradient-to-r from-[#00FFFF] to-[#FF00FF] text-primary-900"
+                      className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-primary-900 hover:opacity-90 transition-opacity"
                       disabled={loginMutation.isPending}
                     >
                       {loginMutation.isPending ? (
@@ -294,7 +308,7 @@ export default function AuthPage() {
                   <CardFooter>
                     <Button 
                       type="submit" 
-                      className="w-full bg-gradient-to-r from-[#00FFFF] to-[#FF00FF] text-primary-900"
+                      className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-primary-900 hover:opacity-90 transition-opacity"
                       disabled={registerMutation.isPending}
                     >
                       {registerMutation.isPending ? (
@@ -317,20 +331,21 @@ export default function AuthPage() {
       {/* Right side - Hero section */}
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-primary-800 to-primary-900 relative">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-[#00FFFF] rounded-full filter blur-[120px] opacity-10"></div>
-          <div className="absolute bottom-40 right-10 w-80 h-80 bg-[#FF00FF] rounded-full filter blur-[130px] opacity-10"></div>
+          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full filter blur-[120px] opacity-10 animate-pulse-slow"></div>
+          <div className="absolute bottom-40 right-10 w-80 h-80 bg-pink-500 rounded-full filter blur-[130px] opacity-10 animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-purple-500 rounded-full filter blur-[100px] opacity-10 animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
         </div>
         
         <div className="relative z-10 flex flex-col justify-center px-8 lg:px-16 max-w-2xl mx-auto w-full">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 font-space leading-tight">
-            Build <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00FFFF] to-[#FF00FF]">Stunning Websites</span> with AI
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 font-space leading-tight animate-fade-in">
+            Build <span className="animated-gradient-text">Stunning Websites</span> with AI
           </h2>
           
           <div className="space-y-6">
-            <div className="flex items-start">
+            <div className="flex items-start animate-fade-in" style={{ animationDelay: '0.1s' }}>
               <div className="flex-shrink-0 mt-1">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.4 8.6L8 12.2L15.6 4.6L17 6L8 15Z" fill="#00FFFF"/>
+                  <path d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.4 8.6L8 12.2L15.6 4.6L17 6L8 15Z" fill="#3B82F6"/>
                 </svg>
               </div>
               <div className="ml-3">
@@ -339,10 +354,10 @@ export default function AuthPage() {
               </div>
             </div>
             
-            <div className="flex items-start">
+            <div className="flex items-start animate-fade-in" style={{ animationDelay: '0.3s' }}>
               <div className="flex-shrink-0 mt-1">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.4 8.6L8 12.2L15.6 4.6L17 6L8 15Z" fill="#FF00FF"/>
+                  <path d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.4 8.6L8 12.2L15.6 4.6L17 6L8 15Z" fill="#8B5CF6"/>
                 </svg>
               </div>
               <div className="ml-3">
@@ -351,10 +366,10 @@ export default function AuthPage() {
               </div>
             </div>
             
-            <div className="flex items-start">
+            <div className="flex items-start animate-fade-in" style={{ animationDelay: '0.5s' }}>
               <div className="flex-shrink-0 mt-1">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.4 8.6L8 12.2L15.6 4.6L17 6L8 15Z" fill="#7C3AED"/>
+                  <path d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM8 15L3 10L4.4 8.6L8 12.2L15.6 4.6L17 6L8 15Z" fill="#EC4899"/>
                 </svg>
               </div>
               <div className="ml-3">
@@ -364,7 +379,7 @@ export default function AuthPage() {
             </div>
           </div>
           
-          <div className="mt-12 p-5 bg-primary-800/60 border border-neutral-700 rounded-lg">
+          <div className="mt-12 p-5 bg-primary-800/60 border border-neutral-700 rounded-lg animate-fade-in" style={{ animationDelay: '0.7s' }}>
             <div className="flex items-start">
               <div className="flex-shrink-0">
                 <div className="w-10 h-10 rounded-full bg-neutral-700 flex items-center justify-center">
