@@ -23,15 +23,26 @@ const registerSchema = insertUserSchema.extend({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-// Create a default context value 
-const defaultContextValue: AuthContextType = {
+// Use a function to create a new default context value to avoid shared references
+const createDefaultContextValue = (): AuthContextType => ({
   user: null,
   isLoading: false,
   error: null,
-  loginMutation: {} as UseMutationResult<SelectUser, Error, LoginData>,
-  logoutMutation: {} as UseMutationResult<void, Error, void>,
-  registerMutation: {} as UseMutationResult<SelectUser, Error, RegisterData>,
-};
+  loginMutation: {
+    mutate: () => {}, 
+    isPending: false
+  } as unknown as UseMutationResult<SelectUser, Error, LoginData>,
+  logoutMutation: {
+    mutate: () => {},
+    isPending: false
+  } as unknown as UseMutationResult<void, Error, void>,
+  registerMutation: {
+    mutate: () => {},
+    isPending: false
+  } as unknown as UseMutationResult<SelectUser, Error, RegisterData>,
+});
+
+const defaultContextValue = createDefaultContextValue();
 
 export const AuthContext = createContext<AuthContextType>(defaultContextValue);
 

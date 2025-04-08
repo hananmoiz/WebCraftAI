@@ -86,17 +86,11 @@ export default function AuthPage() {
   const onLoginSubmit = (data: LoginFormValues) => {
     setError(null);
     
-    try {
-      // In TanStack Query v5, mutations are called directly
-      loginMutation.mutate(data, {
-        onError: (error) => {
-          setError(error.message);
-        }
-      });
-    } catch (err) {
-      setError("Login service is temporarily unavailable. Please try again later.");
-      console.error("Login error:", err);
-    }
+    loginMutation.mutate(data, {
+      onError: (error) => {
+        setError(error.message || "Login failed. Please try again.");
+      }
+    });
   };
 
   const onRegisterSubmit = (data: RegisterFormValues) => {
@@ -104,17 +98,11 @@ export default function AuthPage() {
     // Remove confirmPassword before sending to API
     const { confirmPassword, ...registerData } = data;
     
-    try {
-      // In TanStack Query v5, mutations are called directly
-      registerMutation.mutate(registerData, {
-        onError: (error) => {
-          setError(error.message);
-        }
-      });
-    } catch (err) {
-      setError("Registration service is temporarily unavailable. Please try again later.");
-      console.error("Registration error:", err);
-    }
+    registerMutation.mutate(registerData, {
+      onError: (error) => {
+        setError(error.message || "Registration failed. Please try again.");
+      }
+    });
   };
 
   return (
