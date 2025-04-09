@@ -9,10 +9,11 @@
     "strict": true,
     "lib": ["esnext", "dom", "dom.iterable"],
     "jsx": "preserve",
+    "target": "ESNext",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "Node",
     "baseUrl": ".",
     "types": ["node", "vite/client"],
     "paths": {
